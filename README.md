@@ -1,4 +1,4 @@
-# Spring Core Principles - Basic Study
+# spring-core-principles
 
 <div align="center">
   <img src="https://github.com/WeeklyStudy/spring/assets/63441091/28a07b8f-dd0c-4921-8809-db2e6a93214a" width="300">
@@ -7,9 +7,9 @@
 
 
 ## 운영방식
-- 진행기간 : 2023/10/18 ~ (2주 예정)
+- 진행기간 : 2023/10/18 ~ 2023/10/25
 - 스터디 시간 : 매주 수요일 오후 8시
-- 2주 동안 [스프링 핵심 원리 - 기본편](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8#curriculum)을 토대로 스터디를 진행합니다.
+- 2주 동안 인프런 김영한님 강의 [스프링 핵심 원리 - 기본편](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8#curriculum)을 토대로 스터디를 진행합니다.
 - 구성원 : 3명
   
   |주민지|최승근|한승연|

@@ -5,8 +5,8 @@
 - 스프링 컨테이너는 IoC(Inversion of Control, 제어의 역전) 컨테이너라고 불리기도 한다.
 - 역할:
     - 기존 프로그램은 구현 객체가 프로그램의 제어 흐름을 스스로 조종했다.
-    - 반면, 스프링은 컨테이너가 **인스턴스의 생성부터 소멸까지의 인스턴스 생명 주기를 관리**하기 때문이다.
-    - 스프링 컨테이너가 관리하는 이 객체를 Bean이라고 한다.
+    - 반면, 스프링은 컨테이너가 **인스턴스의 생성부터 소멸까지의 인스턴스 생명 주기를 관리**한다.
+       - 스프링 컨테이너가 관리하는 이 객체를 Bean이라고 한다.
 - 효과:
     - 책임 분리
         - 객체 관리를 프레임워크(Container)에 위임하기 때문에 개발자는 **로직에 집중**할 수 있고, **책임**을 명확하게 **분리**하여 객체지향의 **SRP**(Single Responsibility Principle, 단일 책임 원칙)를 준수할 수 있다.
@@ -16,31 +16,36 @@
 - 스프링 컨테이너는 DI(Dependency Injection, 의존관계 주입) 컨테이너라고 불리기도 한다.
 - 역할:
     - 의존 관계는 1) 정적인 클래스 의존관계, 2)실행시점에 결정되는 동적인 객체 인스턴스 의존관계로 분리된다.
-    - 스프링에서는 컨테이너가 **런타임**에 빈 설정 정보(Bean Definition)를 바탕으로 **실제 구현 객체를 생성**하여 **클라이언트와 서버의 의존관계**를 **연결**하기 때문이다.
-        - 엄밀히 말하자면, Lazy-initialized 설정(`@Lazy`)을 하지 않는 이상, Bean Definition을 통해 의존 관계를 먼저 구성하고, 이를 바탕으로 생성 순서를 정한다.
-        - 이렇게 생성된 빈은 해당 빈이 호출되는 런타임에 생성된 순서대로 초기화된다.
+    - 스프링에서는 애플리케이션 실행 시 컨테이너가 빈 설정 정보(Bean Definition)를 바탕으로 **실제 구현 객체를 생성**하여 **클라이언트와 서버의 의존관계**를 **연결**한다.
+        - 컨테이너가 생성될 때, 즉 ApplicationContext가 로드되는 시점에 Bean Definition을 바탕으로 각 빈의 구성 유효성을 검사한다. 이로 인해 런타임 시 발생할 수 있는 문제를 실행 시점에서 미리 발견할 수 있다.
+       - 또한 기본적으로, ApplicationContext 구현체들은 초기화 프로세스의 일부로 모든 싱글톤 빈을 미리 생성(pre-instantiation)하고 의존관계를 주입한다.
+        - 하지만 스프링의 이런 특징으로 인해 애플리케이션 설정이 많고 무겁다면, 애플리케이션 초기화에 많은 시간이 소요된다.
+        - 이에 '지연 초기화(lazy-initialized)'로 싱글톤 빈이 요청된 시점에 빈 인스턴스를 생성하고 의존관계를 주입하도록 기본 동작을 재정의할 수도 있지만, 지연 초기화가 아닌(not lazy-initialized) 싱글톤 빈의 의존성에 필요할 때는  ApplicationContext 로드 시점에 지연 초기화 빈을 생성하여 다른 싱글톤 빈에 주입한다.
 - 효과:
     - 유연한 수정 → 확장에 용이
         - 정적인 클래스 의존관계를 변경하지 않고 동적인 객체 인스턴스 의존관계를 손쉽게 변경할 수 있다.
         - 다른 코드에 대한 파급력, 특히 **클라이언트(Service Layer) 수정 없이** **클라이언트가 호출하는 대상의 인스턴스 타입**을 **변경**할 수 있다.
         - 이로 인해 객체지향의 **OCP**(Open-Closed Principle, 개방-폐쇄 원칙)을 준수할 수 있다.
 
-> 의존성 주입(DI)하는 3가지 방법
-> 
-> - Setter Injection(수정자 주입)
-> - Constructor Injection(생성자 주입)
-> - Method Injection(필드 주입)
+> #### 💡 의존성 주입(DI) 방법
+> - 의존성을 주입하는 방법에는 Setter Injection(수정자 주입), Constructor Injection(생성자 주입), Field Injection(필드 주입)이 있다.
+> - Spring은 필수 종속성에는 constructors를 사용하고, 선택적 종속성에는 setter methods 혹은 configuration methods을 사용하는 것을 권장한다. 생성자 주입은 프로그래밍 방식으로 인수를 검증하기 때문이다.
+> - 또한, 필드 주입이나 수정자 주입은 객체 생성 시점에는 순환참조가 일어나는지 아닌지 발견할 수 없다. 필드 주입이나 수정자 주입은 빈 생성 후 의존성을 주입하지만, 생성자 주입은 빈 생성하는 시점에 의존성을 주입하기 때문이다.
 
 ### 3. 결론
 
 - 스프링 컨테이너는 객체의 생성, 초기화, 서비스, 소멸에 대한 권한을 지니고(IoC), 객체의 관계를 연결(DI)하여 **객체 간의 의존성(결합도)을 낮추는 역할**을 한다.
 
 ### References
-
+- [[Spring Framework Doc] Bean Dependency Injection *](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html)
+- [[Spring Framework Doc] Lazy-initialized Beans *](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-lazy-init.html)
 - [Spring 컨테이너란?(DI Container, IoC Container)](https://woopi1087.tistory.com/28)
-- [Spring Core Technolohies 1. IoC Container (2) Dependency Injection *](https://blog.leaphop.co.kr/blogs/45)
 - [스프링 컨테이너(IoC 컨테이너)와 빈](https://yeo-computerclass.tistory.com/268)
-- [스프링 핵심 원리 기본편(4) - AppConfig 리팩터링, 새로운 구조와 할인 정책 적용, IoC, DI, 컨테이너, 스프링으로 전환하기 by 인프런 김영한](https://scoring.tistory.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B84-AppConfig-%EB%A6%AC%ED%8C%A9%ED%84%B0%EB%A7%81-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B5%AC%EC%A1%B0%EC%99%80-%ED%95%A0%EC%9D%B8-%EC%A0%95%EC%B1%85-%EC%A0%81%EC%9A%A9-IoC-DI-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EC%8A%A4%ED%94%84%EB%A7%81%EC%9C%BC%EB%A1%9C-%EC%A0%84%ED%99%98%ED%95%98%EA%B8%B0)
+- [생성자 주입을 @Autowired를 사용하는 필드 주입보다 권장하는 하는 이유](https://madplay.github.io/post/why-constructor-injection-is-better-than-field-injection)
+- [[Inflearn] 빈 생성과 의존관계 주입시점에 대하여](https://www.inflearn.com/questions/139218/%EB%B9%88-%EC%83%9D%EC%84%B1%EA%B3%BC-%EC%9D%98%EC%A1%B4%EA%B4%80%EA%B3%84-%EC%A3%BC%EC%9E%85%EC%8B%9C%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+- [[Inflearn] 빈 객체의 빈 저장소 등록 순서](https://www.inflearn.com/questions/89770/spring%EC%9D%98-bean%EC%A3%BC%EC%9E%85-%EA%B4%80%EB%A0%A8-%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4)
+- [[Inflearn] 스프링 컨테이너의 빈 등록 시점](https://www.inflearn.com/questions/122360/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%97%90-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B9%88-%EB%93%B1%EB%A1%9D-%EC%8B%9C%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4-%EC%A7%88%EB%AC%B8%ED%95%A9%EB%8B%88%EB%8B%A4)
+- [[Inflearn] 빈 의존관계주입과 초기화 시점](https://www.inflearn.com/questions/667241/%EB%B9%88-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0-%EC%9D%98%EC%A1%B4%EA%B4%80%EA%B3%84%EC%A3%BC%EC%9E%85%EA%B3%BC-%EC%B4%88%EA%B8%B0%ED%99%94-%EC%8B%9C%EC%A0%90-%EC%A7%88%EB%AC%B8)
 
 ## Q2. **@Component와 @Bean의 차이점은 무엇인가?**
 
@@ -52,20 +57,18 @@
 
 - 선언 레벨:
     - Component:
-        - 클래스 레벨에서 선언한다.
+        - **클래스 레벨**에서 선언한다.
             - `@Controller`, `@Service` , `@Repository` 등이 이에 해당된다.
     - @Bean:
-        - 메서드 레벨에서 선언한다.
+        - **메서드 레벨**에서 선언한다.
 - 활용:
     - @Component:
         - **사용자가 작성한 클래스**를 `@ComponentScan` 대상으로 삼아 빈으로 등록하고 싶을 때 사용한다.
         - 또한, 특정 어노테이션을 클래스에 붙이면 빈으로 등록되는 어노테이션으로 만들고 싶다면 `@Component` 어노테이션으로 만들 수 있다.
     - @Bean:
-        - 설정이나 개발자가 제어가 **불가능**한 **외부 라이브러리**들을 모아 `@Configuration` 어노테이션이 붘은 클래스에서 주로 사용된다.
-            - 예시:
-                - Spring Security에서 제공하는 PasswordEncoder는 개발자에 의해 따로 수정하는 것은 힘들기 때문에 사용할 메서드에 `@Bean` 어노테이션을 붙여서 Bean 등록할 수 있다.
-            - 조건:
-                - `@Configuration` 없이 `@Bean` 만 사용해도 빈 등록되지만, 메서드 호출을 통해 객체를 생성할 때 싱글톤을 보장하지 않는다.
+        - 설정이나 개발자가 **제어불가능**한 **외부 라이브러리**들을 모아 `@Configuration` 어노테이션이 추가된 클래스에서 주로 사용된다.
+            - 예를 들어, Spring Security에서 제공하는 PasswordEncoder는 개발자에 의해 따로 수정하는 것은 힘들기 때문에 사용할 메서드에 `@Bean` 어노테이션을 붙여서 Bean 등록할 수 있다.
+            - 단, `@Configuration` 없이 `@Bean` 만 사용해도 빈 등록은 되지만, 메서드 호출을 통해 객체를 생성할 때 싱글톤을 보장하지 않으므로 주의해야 한다.
 
 ### References
 

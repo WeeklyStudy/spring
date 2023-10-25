@@ -5,7 +5,8 @@
 > 필요한 객체를 직접 생성하는 것이 아니라 외부에서 생성한 후 주입시키는 것이다.
 > 
 - 스프링에서는 `@Autowired` 어노테이션을 통해 의존관계 주입을 제공한다.
-- 기본적으로 `@Autowired(required = true)` 이기 때문에 자동 주입 대상이 없으면 오류가 발생한다.
+    - `@Autowired(required = true)` : 자동 주입 대상이 없으면 오류가 발생한다. → 기본 설정
+    - `@Autowired(required = false)` : 자동 주입할 대상이 없으면 메서드 자체가 호출되지 않는다. 즉, 오류가 발생하지 않는다.
 
 ## 💡의존관계 주입 3가지 방법
 
@@ -15,14 +16,14 @@
 > 
 - 스프링에서 권장하는 방식으로, 가장 자주 사용한다.
 - 생성자가 1개이고 주입받을 객체가 빈으로 등록되어있다면, `@Autowired` 를 생략할 수 있다.
-- 객체 생성과 의존관계 주입이 동시에 이루어진다. (생성자가 객체를 만들 때 파라미터에 주입이 이루어져야 하기 때문이다.)
+- 객체 생성과 의존관계 주입이 동시에 이루어진다.(생성자가 객체를 만들 때 파라미터에 주입이 이루어져야 하기 때문)
 - 장점
     - 필드에 `final` 키워드를 사용할 수 있다.
         - 생성자 호출 시점에 한 번만 할당되기 때문에, 객체의 불변성을 보장한다.
         - 생성자에서 값이 초기화되지 않으면 컴파일 오류가 발생하므로, `NPE(NullPointerException)` 을 방지할 수 있다.
     - 순환 참조 문제를 방지할 수 있다.
-        - 생성자 주입은 앱 구동 시점에 `BeanCurrentlyInCreationException` 오류가 발생한다.
-        - 필드 주입과 수정자 주입은 앱 구동 이후 실제 코드가 호출될 때 오류가 발생한다.
+        - 생성자 주입은 앱 구동 시점에 (빈 생성과 주입이 발생하기 때문에) `BeanCurrentlyInCreationException` 오류가 발생한다.
+        - 필드 주입과 수정자 주입은 (앱 구동 시점에 주입하지 않기 때문에) 앱 구동 이후 실제 코드가 호출될 때 오류가 발생한다.
     - 테스트 코드 작성이 용이하다.
         - 스프링 컨테이너 없이도 의존관계를 주입하여 사용할 수 있다.
 
@@ -67,6 +68,7 @@ public class OrderServiceImpl implements OrderService{
 
 > 필드의 값을 변경하는 수정자 메서드(setter)를 통해 의존관계를 주입하는 방법이다.
 > 
+- 객체 생성 후 의존관계 주입이 일어난다.
 - 단점
     - `public` 접근 제어자를 가진 `setter 메서드`를 통해 의존관계를 변경할 수 있다.
     - `NPE(NullPointerException)`이 발생할 수 있다.
@@ -99,6 +101,7 @@ public class OrderServiceImpl implements OrderService{
 
 > 필드에 바로 주입하는 방법이다.
 > 
+- 객체 생성 후 의존관계 주입이 일어난다.
 - 장점
     - 코드가 매우 간결하다.
 - 단점
@@ -114,8 +117,11 @@ public class OrderServiceImpl implements OrderService{
 ```java
 @Component
 public class OrderServiceImpl implements OrderService{
-    @Autowired private final MemberRepository memberRepository;
-    @Autowired private final DiscountPolicy discountPolicy;
+    @Autowired
+		private MemberRepository memberRepository;
+    
+		@Autowired
+		private DiscountPolicy discountPolicy;
 }
 ```
 
@@ -151,8 +157,9 @@ public class OrderServiceImpl implements OrderService{
 ## Reference
 
 - [[Spring] 의존성 주입 3가지 방법 - (생성자 주입, Field 주입, Setter 주입)*](https://dev-coco.tistory.com/70)
-- [Spring DI(Dependency Injection) - 의존 관계 주입 핵심 정리](https://backendcode.tistory.com/249)
+- [Spring DI(Dependency Injection) - 의존 관계 주입 핵심 정리*](https://backendcode.tistory.com/249)
 - [[Spring Boot] 순환참조문제](https://ch4njun.tistory.com/269)
+- [Spring - Spring Security 적용시 순환 참조 발생 (Spring circular reference)*](https://green-bin.tistory.com/52)
 - [스프링 - 생성자 주입을 사용해야 하는 이유, 필드인젝션이 좋지 않은 이유](https://yaboong.github.io/spring/2019/08/29/why-field-injection-is-bad/)
 - [생성자 주입의 경우엔 @Autowired(required=false)를 쓸 수 없는건가요?](https://www.inflearn.com/questions/214902/%EC%83%9D%EC%84%B1%EC%9E%90-%EC%A3%BC%EC%9E%85%EC%9D%98-%EA%B2%BD%EC%9A%B0%EC%97%94-autowired-required-false-%EB%A5%BC-%EC%93%B8-%EC%88%98-%EC%97%86%EB%8A%94%EA%B1%B4%EA%B0%80%EC%9A%94)
 - [[Spring] 스프링 의존성 주입(DI : Dependency Injection) 4가지 방법 (의존 관계 자동 주입)](https://ittrue.tistory.com/227)

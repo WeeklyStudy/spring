@@ -62,7 +62,7 @@
 ### 3. final 필드에 적용되는 @RequiredArgsConstructor
 
 - `@RequiredArgsConstructor`은 각 필드에 대해 1개의 매개변수를 갖는 생성자를 자동으로 생성한다.
-- **그런데 이 때, 초기화되지 않은 `final` 필드와 `@NonNull`로 표시된 필드에 대해서만 매개변수가 생성된다.**
+- **그런데 이 때, 초기화되지 않은 `final` 필드와 `@NonNull` 어노테이션이 적용된 필드에 대해서만 매개변수가 생성된다.**
 - 프로젝트 코드 예제
     - 어노테이션 적용 전
         ```java
@@ -87,7 +87,7 @@
         -  이처럼 `@RequiredArgsConstructor`를 사용한 경우, ShopService 클래스의 생성자는 this.shopRepository 필드에 shopRepository를 매개변수로, this.kakaoMapSearchApi 필드에 kakaoMapSearchApi를 매개변수로 자동 생성한다. 
         - 또한, 생성자가 하나뿐이기 때문에 `@Autowired` 어노테이션을 붙이지 않아도 의존성 주입이 자동으로 처리되어 '생성자 주입' 동작이 발생한다.
 ### 4. 결론
-- `final`필드와 `@NonNull` 이 붙은 필드에 한해서만 `@RequiredArgsConstructor`로 생성자 주입 코드를 줄일 수 있다.
+- `@RequiredArgsConstructor` 어노테이션은 `final` 필드나 `@NonNull` 필드에 대해서만 생성자를 자동으로 생성하며, 이를 통해 생성자 주입 코드를 간결하게 유지할 수 있다.
 ### References
 
 - [What is the difference between immutable and final in java?](https://stackoverflow.com/questions/34087724/what-is-the-difference-between-immutable-and-final-in-java)

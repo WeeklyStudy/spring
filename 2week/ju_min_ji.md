@@ -1,29 +1,23 @@
 ## Q1.  **@RequiredArgsConstructor와 final 키워드의 관계**
 
 ### 1. final 키워드란?
-
 - 의미
-    - 변수, 메서드, 또는 클래스에 사용되고, 어떤 곳에 사용되느냐에 따라 다른 의미를 가진다.
+    - 변수, 메서드, 또는 클래스에 사용되고, **어떤 곳에 사용되느냐**에 따라 다른 의미를 가진다.
     - 하지만 `final` 키워드를 붙이면 무언가를 **제한**한다는 공통적인 의미를 지닌다.
 - 선언 위치
     - 변수:
-        - 변수에 final 키워드를 붙이면, 한 번 초기화되면 최종이 되어 이후에 **재할당 불가능**하다는 의미이다.
+        - 변수에 final 키워드를 붙이면, 한 번 초기화되면 **최종**이 되어 이후에 **재할당 불가능**하다는 의미이다.
         - 다만, `final` 키워드만으로는 **불변을 보장할 수는 없다**.
-            - Primitive 타입에서는 참조값이 존재하지 않기 때문에 외부에서도 그대로 불변으로 존재하게 된다.
-                
+            - Primitive 타입에서는 참조값이 존재하지 않기 때문에 외부에서도 그대로 불변으로 존재하게 된다. 
                 ```java
                 final int num = 3;
                 
                 num = 4; // compile error
-                ```
-                
+                ``` 
             - 하지만 참조 변수의 경우, `final`이더라도 불변성을 얻을 수는 없다. 객체의 참조는 변경 불가능하지만, 객체의 속성은 변경 가능하기 때문이다.
-                
-                
-                | final | 다른 참조나 다른 객체를 가리키도록 객체의 참조를 변경할 수는 없지만, 상태를 변경할 수는 있음을 의미 (setter methods 사용 e.g) |
+                | final |  불변 |
                 | --- | --- |
-                | 불변 | 객체의 실제 값 혹은 상태을 변경할 수 없지만, 참조를 다른 값으로 변경할 수 있음을 의미 |
-                
+                |객체의 실제 값 혹은 상태을 변경할 수 없지만, 참조를 다른 값으로 변경할 수 있음을 의미 |다른 참조나 다른 객체를 가리키도록 객체의 참조를 변경할 수는 없지만, 상태를 변경할 수는 있음을 의미 (e.g. setter methods 사용)|
                 ```java
                 final StringBuilder sb = new StringBuilder();
                 
@@ -34,52 +28,43 @@
                 sb.append("modify");
                 System.out.println(sb); // output: modify
                 ```
-                
-        - final 키워드를 사용한 변수에 초기값을 설정하는 방법
+        - final 키워드를 사용한 변수에 초기값을 설정하는 방법:
             - 변수를 선언하는 동시에 초기화
-                
                 ```java
                 @Service
                 public class KakaoMapSearchApi {
                     private final double DOCUMENTS_PER_PAGE = 15.0;
-                ```
-                
-            - 생성자 내에서 초기화
-                
+                ```  
+            - **생성자 내에서 초기화**  
                 ```java
                 @Service
                 public class ShopService {
                     private final ShopRepository shopRepository;
                     private final KakaoMapSearchApi kakaoMapSearchApi;
                 
-                    // @Autowired // 생성자가 1개면 @Autowired를 생략해도 자동 주입된다.
                     public ShopService(ShopRepository shopRepository, KakaoMapSearchApi kakaoMapSearchApi) {
                         this.shopRepository = shopRepository;
                         this.kakaoMapSearchApi = kakaoMapSearchApi;
                     }
-                ```
-                
+                ```  
     - 메서드:
         - 하위 클래스에서 오버라이딩할 수 없다.
     - 클래스:
         - 해당 클래스는 다른 클래스에서 상속할 수 없다.
-
 ### 2. 생성자 주입과 **final 키워드의 관계**
 
 - Spring Framework의 IoC 컨테이너는 등록된 빈(bean) 간의 의존관계를 주입하고 관리한다.
-- 그 중 **생성자 주입**은 생성자 호출 시점에 딱 1번만 호출되기 때문에 **주입하는 인스턴스를 변경할 수 없다**.
+- 그 중 **생성자 주입은 생성자 호출 시점에 딱 1번만 호출되기 때문에 주입하는 인스턴스를 변경할 수 없다.**
 - `final` 키워드로 필드를 선언하면 해당 필드를 초기화하기 전에 사용하려고 하면 **컴파일 오류**가 발생한다.
-- 따라서, 생성자 주입은 `final` 키워드를 사용하기에 이상적이다. 생성자에서 혹시라도 값이 설정되지 않는 오류를 **컴파일 시점**에 막아주기 때문이다.
+- **따라서, 생성자 주입은 `final` 키워드를 사용하기에 이상적이다. 생성자에서 혹시라도 값이 설정되지 않는 오류를 **컴파일 시점**에 막아주기 때문이다.**
 - 수정자 주입을 포함한 나머지 주입 방식은 모두 생성자 이후에 호출되므로, 필드에 `final` 키워드를 사용 할 수 없다.
 
-### 3. final 필드에 적용되는 **@RequiredArgsConstructor**
+### 3. final 필드에 적용되는 @RequiredArgsConstructor
 
 - `@RequiredArgsConstructor`은 각 필드에 대해 1개의 매개변수를 갖는 생성자를 자동으로 생성한다.
-- 그런데 이 때, 초기화되지 않은 `final` 필드와 `@NonNull`로 표시된 필드에 대한 매개변수가 생성된다.
-- 즉, `final`필드와 `@NonNull` 이 붙은 필드에 한해서만 `@RequiredArgsConstructor`로 생성자 주입 코드를 줄일 수 있다.
-- 코드 예제
-    - 기존 코드
-        
+- **그런데 이 때, 초기화되지 않은 `final` 필드와 `@NonNull`로 표시된 필드에 대해서만 매개변수가 생성된다.**
+- 프로젝트 코드 예제
+    - 어노테이션 적용 전
         ```java
         @Service
         public class ShopService {
@@ -91,9 +76,7 @@
                 this.kakaoMapSearchApi = kakaoMapSearchApi;
             }
         ```
-        
-    - 수정 코드
-        
+    - 어노테이션 적용 후
         ```java
         @RequiredArgsConstructor
         @Service
@@ -101,8 +84,10 @@
             private final ShopRepository shopRepository;
             private final KakaoMapSearchApi kakaoMapSearchApi;
         ```
-        
-
+        -  이처럼 `@RequiredArgsConstructor`를 사용한 경우, ShopService 클래스의 생성자는 this.shopRepository 필드에 shopRepository를 매개변수로, this.kakaoMapSearchApi 필드에 kakaoMapSearchApi를 매개변수로 자동 생성한다. 
+        - 또한, 생성자가 하나뿐이기 때문에 `@Autowired` 어노테이션을 붙이지 않아도 의존성 주입이 자동으로 처리되어 '생성자 주입' 동작이 발생한다.
+### 4. 결론
+- `final`필드와 `@NonNull` 이 붙은 필드에 한해서만 `@RequiredArgsConstructor`로 생성자 주입 코드를 줄일 수 있다.
 ### References
 
 - [What is the difference between immutable and final in java?](https://stackoverflow.com/questions/34087724/what-is-the-difference-between-immutable-and-final-in-java)

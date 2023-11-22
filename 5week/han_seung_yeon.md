@@ -35,7 +35,7 @@
 
 ## 💡@RequestParam, @ModelAttribute, @RequestBody의 차이
 
-### 1. @RequestParam → 1번 처리 방법
+### 1. @RequestParam → 1, 2번 처리 방법
 
 > 1개의 HTTP 요청 파라미터를 **맵핑**한다.
 > 
@@ -81,6 +81,7 @@
 - [스프링 ModelAttribute 데이터 바인딩 과정 이해하기](https://jaykaybaek.tistory.com/15)
 - [자바 리플렉션 (Reflection) 기초](https://hudi.blog/java-reflection/)
 - [@ModelAttribute을 setter 없이 사용할 수 있는 이유*](https://hyeon9mak.github.io/model-attribute-without-setter/)
+- [Spring MVC - @ModelAttribute의 장점(@RequestParam와 @ModelAttribute)](https://galid1.tistory.com/769)
 
 # https://github.com/WeeklyStudy/spring/issues/14 ResponseEntity와 @ResponseBody의 차이점은 무엇인가?
 

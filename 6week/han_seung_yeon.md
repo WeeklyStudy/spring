@@ -20,8 +20,9 @@
 > 
 > - HTTP 요청 → WAS → `필터` → DispatcherServlet → `인터셉터` → 컨트롤러
 > 
-> ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/7faad4fc-02ab-4e5e-9105-126c226c9bb6/1fa32e94-87fb-412d-8374-52e7976abacf/Untitled.png)
-> 
+>
+> ![Untitled (25)](https://github.com/WeeklyStudy/spring/assets/48237976/6159ae28-36cc-40be-9fd0-4d5d3a707511)
+
 1. 필터는 `웹 컨테이너(톰캣)`에 의해 관리되고, 인터셉터는 `스프링 컨테이너`에 의해 관리된다.
 2. 필터는 스프링에 의한(`ControllerAdvice`와 `ExceptionHandler`를 이용한) 예외처리가 불가능하고, 인터셉터는 스프링에 의한 예외처리가 가능하다.
 3. 필터는 요청/응답 객체를 조작할 수 있지만, 인터셉터는 조작할 수 없습니다.

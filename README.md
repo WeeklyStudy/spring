@@ -1,4 +1,4 @@
-# spring
+<img width="664" alt="image" src="https://github.com/WeeklyStudy/spring/assets/63441091/37d092dc-fea3-4ea8-bd53-7facf8b822bb"># spring
 
 <div align="center">
   <img src="https://github.com/WeeklyStudy/spring/assets/63441091/28a07b8f-dd0c-4921-8809-db2e6a93214a" width="300">
@@ -31,4 +31,4 @@
 |4주차 |2023/11/08|스프링 MVC 1편| section 4, 5|
 |5주차 |2023/11/22|스프링 MVC 1, 2편| [1편] section 6, [2편] section 3|
 |6주차 |2023/12/06|스프링 MVC 2편| section 6, 7|
-
+|7주차 |2023/12/17|스프링 MVC 2편| section 8, 9|

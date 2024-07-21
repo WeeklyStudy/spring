@@ -8,7 +8,7 @@
 
 
 ## 운영방식
-- 진행기간 : 2023/10/18 ~ ing
+- 진행기간 : 2023/10/18 ~ 2023/12/06
 - 스터디 시간 : 매주 수요일 오후 8시
 - 2주 동안 인프런 김영한님 강의 [스프링 핵심 원리 - 기본편](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%95%B5%EC%8B%AC-%EC%9B%90%EB%A6%AC-%EA%B8%B0%EB%B3%B8%ED%8E%B8#curriculum)을 토대로 스터디를 진행합니다.
 - 이후에는 인프런 김영한님 강의 [스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1#curriculum), [스프링 MVC 2편 - 백엔드 웹 개발 활용 기술](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-2#curriculum)을 토대로 스터디를 진행합니다.
@@ -31,4 +31,3 @@
 |4주차 |2023/11/08|스프링 MVC 1편| section 4, 5|
 |5주차 |2023/11/22|스프링 MVC 1, 2편| [1편] section 6, [2편] section 3|
 |6주차 |2023/12/06|스프링 MVC 2편| section 6, 7|
-|7주차 |2023/12/17|스프링 MVC 2편| section 8, 9|
